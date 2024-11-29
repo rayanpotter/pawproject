@@ -33,7 +33,7 @@
                 <div class="toggle-panel toggle-right">
                     <h1>you looking for someone ?</h1>
                    
-                   
+                 <button>  <a href="../index.php" style="color:aliceblue;">Back to Home</a> </button> 
                 </div>
             </div>
         </div>

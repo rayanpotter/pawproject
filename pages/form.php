@@ -13,36 +13,26 @@
 
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form>
+            <form action="../db/addStudent.php" method="post">
                 <h1>Create Account</h1>
-               <!-- <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>-->
+             
                 <span> use your email for registeration</span>
-                <input type="text" placeholder="Nom">
-                <input type="text" placeholder="Prenom">
-                <input type="email" placeholder="Email">
-                <input type="text" placeholder="Groupe">
-                <button>Sign Up</button>
+                <input type="text" placeholder="Nom" name="nom" required>
+                <input type="text" placeholder="Prenom" name="prenom" required>
+                <input type="email" placeholder="Email" name="email" required>
+                <input type="text" placeholder="Groupe" name="groupe" required>
+                <button name="submit_student" value="Add Student">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
-            <form>
+            <form action="../db/loginStudent.php" method="post">
                 <h1>Sign In</h1>
-               <!-- <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>-->
-                <span> use your email and ******</span>
-                <input type="email" placeholder="Email">
-                <input type="text" placeholder="*****">
-               <!--<a href="#">Forget Your Password?</a> --> 
-                <button>Sign In</button>
+              
+                <span> use your email and your name</span>
+                <input type="email" placeholder="Email" name="email">
+                <input type="text" placeholder="nom" name="nom">
+              
+                <button type="submit" value="Login">Sign In</button>
             </form>
         </div>
         <div class="toggle-container">
@@ -56,6 +46,7 @@
                     <h1>Hello, Student!</h1>
                     <p>Register with your personal details to use all of site features</p>
                     <button class="hidden" id="register">Sign Up</button>
+                    <button>  <a href="../index.php" style="color:aliceblue;">Back to Home</a> </button> 
                 </div>
             </div>
         </div>

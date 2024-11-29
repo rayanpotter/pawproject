@@ -23,13 +23,16 @@
           <ul class="navbar-nav ms-auto text-end">
 
             <li class="nav-item">
-              <a class="nav-link" href="#">list student</a>
+              <a class="nav-link" href="db/list.php">LIST STUDENT</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="pages/formSS.php">search student</a>
+              <a class="nav-link" href="pages/formSS.php">SEARCH STUDENT</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">results</a>
+              <a class="nav-link" href="db/results.php">RESULTS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pages/about_us.php">ABOUT US</a>
             </li>
           </ul>
         </div>

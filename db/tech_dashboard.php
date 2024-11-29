@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results</title>
-
+    <title>Tech Dashboard</title>
+  
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -12,27 +12,19 @@
 <?php
 include("Database.php");
 
-$email = isset($_POST['email']) ? $_POST['email'] : '';
-$prenom = isset($_POST['prenom']) ? $_POST['prenom'] : '';
-$nom = isset($_POST['nom']) ? $_POST['nom'] : '';
 
-
-$search_sql = "SELECT students.*, recours.module, recours.nature, recours.note_affiche, recours.note_reel, recours.status
-               FROM students
-               LEFT JOIN recours ON students.id = recours.id_student
-               WHERE (students.email LIKE :email OR :email = '')
-               AND (students.prenom LIKE :prenom OR :prenom = '')
-               AND (students.nom LIKE :nom OR :nom = '')";
-$search_stmt = $pdo->prepare($search_sql);
-$search_stmt->bindValue(':email', '%' . $email . '%');
-$search_stmt->bindValue(':prenom', '%' . $prenom . '%');
-$search_stmt->bindValue(':nom', '%' . $nom . '%');
-$search_stmt->execute();
-$students = $search_stmt->fetchAll(PDO::FETCH_ASSOC);
+$sql = "SELECT students.*, recours.id AS recours_id, recours.module, recours.nature, recours.note_affiche, recours.note_reel, recours.status
+        FROM students
+        LEFT JOIN recours ON students.id = recours.id_student
+        WHERE recours.status IS NOT NULL
+        AND recours.status NOT IN (1, 2)";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="container mt-5">
-    <h2>Search Results</h2>
+    <h2>Tech Dashboard</h2>
 
     <?php if (!empty($students)): ?>
         <table class="table table-bordered">
@@ -47,6 +39,7 @@ $students = $search_stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Note Affiche</th>
                     <th>Note Reel</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,20 +49,24 @@ $students = $search_stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $student['nom'] . ' ' . $student['prenom']; ?></td>
                         <td><?php echo $student['email']; ?></td>
                         <td><?php echo $student['groupe']; ?></td>
-                        <td><?php echo $student['module'] ?? 'None'; ?></td>
-                        <td><?php echo $student['nature'] ?? 'None'; ?></td>
-                        <td><?php echo $student['note_affiche'] ?? 'None'; ?></td>
-                        <td><?php echo $student['note_reel'] ?? 'None'; ?></td>
-                        <td style="color: <?php echo getStatusColor($result['status']); ?>">
-                            <?php echo $student['status'] !== null ? getStatusText($student['status']) : 'None'; ?>
-                            
+                        <td><?php echo $student['module']; ?></td>
+                        <td><?php echo $student['nature']; ?></td>
+                        <td><?php echo $student['note_affiche']; ?></td>
+                        <td><?php echo $student['note_reel']; ?></td>
+                        <td><?php echo getStatusText($student['status']); ?></td>
+                        <td>
+                            <form method="post" action="update_status.php">
+                                <input type="hidden" name="recours_id" value="<?php echo $student['recours_id']; ?>">
+                                <button type="submit" name="favorable" class="btn btn-success">Favorable</button>
+                                <button type="submit" name="defavorable" class="btn btn-danger">Defavorable</button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     <?php else: ?>
-        <p>No results found for the search query.</p>
+        <p>No students with recours found.</p>
     <?php endif; ?>
 
     <a href="../index.php" class="btn btn-secondary">Back to Home</a>
@@ -84,18 +81,6 @@ $students = $search_stmt->fetchAll(PDO::FETCH_ASSOC);
 </html>
 
 <?php
-function getStatusColor($status)
-{
-    switch ($status) {
-        case 1:
-            return '#89B9AD'; // Favorable
-        case 2:
-            return '#860A35'; // Defavorable
-        default:
-            return '#F3B664'; // En attent
-    }
-}
-
 function getStatusText($status)
 {
     switch ($status) {
